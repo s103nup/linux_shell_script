@@ -18,6 +18,7 @@ mv "${backupRoot}/.git" .
 # Update local git branch
 git checkout "${prodGitBranch}" \
     && git reset --hard \
+    && git clean -d -f \
     && git pull
 
 # Update composer dependency
