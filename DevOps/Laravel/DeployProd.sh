@@ -4,45 +4,75 @@
 #   1. Make sure ".git" directory exist in backup directory
 #   2. Set git repository url to local path, Ex: file:///var/devops/source.git/
 
+source "./lib/Base.sh"
+source "./lib/Git.sh"
+source "./lib/Composer.sh"
+source "./lib/Npm.sh"
+source "./lib/Laravel.sh"
+
+# Basic configuration
 siteName="<site name>"
 siteRoot="<site root>"
-prodGitBranch="<prodction git branch>"
+tempBranch="develop"
+masterBranch="master"
 backupRoot="<backup root>"
+removeDirs="<remove direcoties>"
+
+# Advance configuration
+useComposer=false
+useNpm=false
+useSwagger=false
+useClearFiles=false
 
 # Switch to site root
-if [ ! -d "${siteRoot}" ]; then
-    echo "Directory ${siteRoot} does not exists"
-    exit
-fi
-cd "${siteRoot}" \
+switchDir $siteRoot
 
 # Rollback ".git" directory
-if [ ! -d "${backupRoot}" ]; then
-    echo "Directory ${backupRoot} does not exists"
-    exit
-fi
-mv "${backupRoot}/.git" .
+rollbackDotGitDir $backupRoot $siteRoot
 
-# Update local git branch
-git checkout "${prodGitBranch}" \
-    && git reset --hard \
-    && git clean -d -f \
-    && git pull
-if [ $? -ne 0 ]; then
-    echo "Update local git failed"
+# Clean current branch
+cleanCurrentBranch
+
+# Checkout temparory branch
+checkoutBranch $tempBranch
+
+# Delete local master branches
+deleteBranch $masterBranch
+
+# Update local git
+updateLocalGit
+
+# Checkout remote master branch
+checkoutRemoteSpecificBranch $masterBranch
+
+if [ "$useComposer" = true ]; then
+    # Install composer dependency that skips installing packages listed in require-dev
+    installDependencyNoDev
 fi
 
-# Update composer dependency
-#composer install
+# Update Laravel config cache
+updateConfigCache
 
-# Update laravel config cache
-php artisan config:cache
-if [ $? -ne 0 ]; then
-    echo "Update Laravel config cache failed"
+if [ "$useNpm" = true ]; then
+    # Install npm dependency
+    installDependency
+
+    # Compiler front-end scripts
+    compilerProd
 fi
+
+if [ "$useSwagger" = true ]; then
+    # Update Swagger
+    updateSwagger
+fi
+
+# Display local branchs
+displayCurrentBranchDetail
 
 # Backup ".git" directory
-mv .git "${backupRoot}/"
+backupDotGitdir $siteRoot $backupRoot
 
-# Remove unecessary files
-#rm -rf ./other
+if [ "$useClearFiles" = true ]; then
+    # Remove unecessary files
+    removeDirs $removeDirs
+fi
