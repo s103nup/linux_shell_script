@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Configuration
+REMOTE_PREFIX='remotes/origin'
+
 # Functions
 rollbackDotGitDir () {
     source=$1
@@ -53,15 +56,15 @@ updateLocalGit () {
 }
 
 checkoutRemoteSpecificBranch () {
-    branch="remotes/origin/$1"
-    echoInfo "Checkout $branch branch"
+    branch="$REMOTE_PREFIX/$1"
+    echoInfo "Checkout remote $branch branch"
     git checkout --track $branch
     isFailed
 }
 
 checkoutRemoteSpecificPrefixBranch () {
-    prefix="remotes/origin/$1/"
-    targetBranches=$(git branch -av | grep $prefix | awk -F'  ' '{print $2}' | cut -d ' ' -f1 | head -n1)
+    prefix="$REMOTE_PREFIX/$1/"
+    targetBranches=$(git branch -av | grep $prefix | awk -F'  ' '{print $2}' | cut -d ' ' -f1 | cut -d '/' -f3,4 | head -n1)
     checkoutRemoteSpecificBranch $targetBranches
 }
 
