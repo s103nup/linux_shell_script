@@ -10,25 +10,26 @@ source "./lib/Composer.sh"
 source "./lib/Npm.sh"
 source "./lib/Laravel.sh"
 
+
 # Basic configuration
 siteName="<site name>"
 siteRoot="/var/www/$siteName"
 tempBranch="master"
-featureBranchPrefix="feature"
+releaseBranchPrefix="release"
 backupRoot="/home/<user>/devops/$siteName/backup"
-removeDirs="<remove direcoties>"
+removeDirs="<remove directories>"
 
 # Advance configuration
 useComposer=false
-useMigration=false
 useNpm=false
 useSwagger=false
-usePhpunit=false
-useDusk=false
 useClearFiles=false
 
 # Switch to site root
 switchDir $siteRoot
+
+# Rollback ".git" directory
+rollbackDotGitDir $backupRoot $siteRoot
 
 # Clean current branch
 cleanCurrentBranch
@@ -36,14 +37,14 @@ cleanCurrentBranch
 # Checkout temparory branch
 checkoutBranch $tempBranch
 
-# Delete local feature branches
-deleteSpecificPrefixBranchs $featureBranchPrefix
+# Delete local release branches
+deleteSpecificPrefixBranchs $releaseBranchPrefix
 
 # Update local git
 updateLocalGit
 
-# Checkout feature branch
-checkoutRemoteSpecificPrefixBranch $featureBranchPrefix
+# Checkout release branch
+checkoutRemoteSpecificPrefixBranch $releaseBranchPrefix
 
 if [ "$useComposer" = true ]; then
     # Install composer dependency that skips installing packages listed in require-dev
@@ -52,11 +53,6 @@ fi
 
 # Update Laravel config cache
 updateConfigCache
-
-if [ "$useMigration" = true ]; then
-    # Update Laravel migration
-    updateMigration
-fi
 
 if [ "$useNpm" = true ]; then
     # Install npm dependency
@@ -71,18 +67,11 @@ if [ "$useSwagger" = true ]; then
     updateSwagger
 fi
 
-if [ "$usePhpunit" = true ]; then
-    # Feature test
-    runPhpunit
-fi
-
-if [ "$useDusk" = true ]; then
-    # E2e test
-    runDusk
-fi
-
 # Display local branchs
 displayCurrentBranchDetail
+
+# Backup ".git" directory
+backupDotGitdir $siteRoot $backupRoot
 
 if [ "$useClearFiles" = true ]; then
     # Remove unecessary files
