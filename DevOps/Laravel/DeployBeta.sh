@@ -1,120 +1,90 @@
 #!/bin/bash
-siteRoot="<site root>"
-mainBranch="master"
-useComposer=true
-useNpm=true
-useSwagger=true
-usePhpunit=true
-useDusk=true
+#
+# Notice:
+#   1. Make sure ".git" directory exist in backup directory
+#   2. Set git repository url to local path, Ex: file:///var/devops/source.git/
 
-# Functions
-isFailed () {
-    # Execution result
-    result=$?
+source "./lib/Base.sh"
+source "./lib/Git.sh"
+source "./lib/Composer.sh"
+source "./lib/Npm.sh"
+source "./lib/Laravel.sh"
 
-    # Set error message
-    defaultMsg="Failed!"
-    if [ $# -gt 0 ]; then
-        defaultMsg=$1
-    fi
+# Basic configuration
+siteName="<site name>"
+siteRoot="/var/www/$siteName"
+tempBranch="master"
+featureBranchPrefix="feature"
+backupRoot="/home/<user>/devops/$siteName/backup"
+removeDirs="<remove direcoties>"
 
-    # Check execution result
-    if [ $result -ne 0 ]; then
-        echo $defaultMsg
-        exit 1
-    fi
-}
+# Advance configuration
+useComposer=false
+useMigration=false
+useNpm=false
+useSwagger=false
+usePhpunit=false
+useDusk=false
+useClearFiles=false
 
 # Switch to site root
-echo "Switch to $siteRoot directory"
-if [ ! -d "$siteRoot" ]; then
-    echo "Directory $siteRoot does not exists"
-    exit
-fi
-cd "${siteRoot}" \
+switchDir $siteRoot
 
 # Clean current branch
-currentBranch=$(git rev-parse --abbrev-ref HEAD)
-echo "Clean $currentBranch branch"
-git reset --hard \
-    && git clean -d -f
-isFailed
+cleanCurrentBranch
 
-# Checkout main branch
-echo "Checkout $mainBranch branch"
-git checkout "$mainBranch"
-isFailed
+# Checkout temparory branch
+checkoutBranch $tempBranch
 
 # Delete local feature branches
-featureBranches=$(git branch | grep feature/ | cut -d ' ' -f 3)
-if [ ! -z "$featureBranches" ]; then
-    echo "Delete branches $featureBranches"
-    git branch -D "$featureBranches"
-    isFailed
-fi
+deleteSpecificPrefixBranchs $featureBranchPrefix
 
 # Update local git
-echo "Update local git"
-git fetch \
-    && git remote prune origin
-isFailed
+updateLocalGit
 
-# Checkout beta branch
-betaBranch=$(git branch -av | grep remotes/origin/feature/ | awk -F'  ' '{print $2}' | cut -d ' ' -f1 | head -n1)
-echo "Checkout ${betaBranch} branch"
-git checkout --track "${betaBranch}"
-isFailed
+# Checkout feature branch
+checkoutRemoteSpecificPrefixBranch $featureBranchPrefix
 
 if [ "$useComposer" = true ]; then
-    # Update composer dependency
-    echo "Update composer dependency"
-    composer install
-    isFailed
+    # Install composer dependency that skips installing packages listed in require-dev
+    installDependencyNoDev
 fi
 
 # Update Laravel config cache
-echo "Update Laravel config cache"
-php artisan config:cache
-isFailed
+updateConfigCache
 
-# Update Laravel migration
-echo "Update Laravel migration"
-php artisan migrate
-isFailed
+if [ "$useMigration" = true ]; then
+    # Update Laravel migration
+    updateMigration
+fi
 
 if [ "$useNpm" = true ]; then
-    # Update npm dependency
-    echo "Update npm dependency"
-    npm install
-    isFailed
+    # Install npm dependency
+    installDependency
 
     # Compiler front-end scripts
-    echo "Compiler front-end scripts"
-    npm run dev
-    isFailed
+    compilerProd
 fi
 
 if [ "$useSwagger" = true ]; then
     # Update Swagger
-    echo "Update Swagger"
-    php artisan l5-swagger:generate
-    isFailed
+    updateSwagger
 fi
 
 if [ "$usePhpunit" = true ]; then
     # Feature test
-    echo "Run the feature tests"
-    ./vendor/bin/phpunit --testdox
-    isFailed
+    runPhpunit
 fi
 
 if [ "$useDusk" = true ]; then
     # E2e test
-    echo "Run the E2E tests"
-    php artisan dusk --testdox
-    isFailed
+    runDusk
 fi
 
 # Display local branchs
-git branch -v
-isFailed
+displayCurrentBranchDetail
+
+if [ "$useClearFiles" = true ]; then
+    # Remove unecessary files
+    removeDirs $removeDirs
+fi
