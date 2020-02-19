@@ -12,10 +12,10 @@ source "./lib/Laravel.sh"
 
 # Basic configuration
 siteName="<site name>"
-siteRoot="<site root>"
+siteRoot="/var/www/$siteName"
 tempBranch="develop"
 masterBranch="master"
-backupRoot="<backup root>"
+backupRoot="/home/<user>/devops/$siteName/backup"
 removeDirs="<remove direcoties>"
 
 # Advance configuration
