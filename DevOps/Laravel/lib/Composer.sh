@@ -6,3 +6,9 @@ installDependencyNoDev () {
     composer install --no-dev
     isFailed
 }
+
+installDependency () {
+    echoInfo "Install composer dependency"
+    composer install
+    isFailed
+}

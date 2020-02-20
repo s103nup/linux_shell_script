@@ -46,8 +46,8 @@ updateLocalGit
 checkoutRemoteSpecificPrefixBranch $featureBranchPrefix
 
 if [ "$useComposer" = true ]; then
-    # Install composer dependency that skips installing packages listed in require-dev
-    installDependencyNoDev
+    # Install composer dependency
+    installDependency
 fi
 
 # Update Laravel config cache
