@@ -47,7 +47,7 @@ checkoutRemoteSpecificPrefixBranch $featureBranchPrefix
 
 if [ "$useComposer" = true ]; then
     # Install composer dependency
-    installDependency
+    installComposerDependency
 fi
 
 # Update Laravel config cache
@@ -60,7 +60,7 @@ fi
 
 if [ "$useNpm" = true ]; then
     # Install npm dependency
-    installDependency
+    installNpmDependency
 
     # Compiler front-end scripts
     compilerProd

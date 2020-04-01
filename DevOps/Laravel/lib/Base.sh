@@ -33,7 +33,7 @@ isFailed () {
 
 switchDir () {
     destination=$1
-    echoInfo "Switch to $destination directory"
+
     cd $siteRoot
     isFailed
 }
@@ -41,13 +41,23 @@ switchDir () {
 move () {
     source=$1
     destination=$2
+
     mv $1 $2
     isFailed
 }
 
 removeDirs () {
     dirs=$@
-    echoInfo "Remove directory $dirs"
+
+    rm -rf $dirs
+    isFailed
+}
+
+makeDirs () {
+    dirs=$@
+
+    mkdir -p $dirs
+    isFailed
 }
 
 # isDirExist() {
@@ -55,3 +65,28 @@ removeDirs () {
 #         echoErrorAndExit "Directory $1 does not exists"
 #     fi
 # }
+
+replaceInFile () {
+    search=$1
+    replace=$2
+    destination=$3
+
+    sed -i "s/$search/$replace/g" $destination
+    isFailed
+}
+
+changePermissionRecursive () {
+    permission=$1
+    target=$2
+
+    chmod -R $permission $target
+    isFailed
+}
+
+copy () {
+    source=$1
+    target=$2
+    
+    cp $source $target
+    isFailed
+}

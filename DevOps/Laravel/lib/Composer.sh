@@ -1,14 +1,22 @@
 #!/bin/bash
 
 # Functions
-installDependencyNoDev () {
-    echoInfo "Install composer dependency that skips installing packages listed in require-dev"
+installComposerDependencyNoDev () {
     composer install --no-dev
     isFailed
 }
 
-installDependency () {
-    echoInfo "Install composer dependency"
+installComposerDependency () {
     composer install
+    isFailed
+}
+
+
+createComposerProject () {
+    packageName=$1
+    packageVersion=$2
+    destination=$3
+    
+    composer create-project --prefer-dist $packageName $destination "$packageVersion"
     isFailed
 }

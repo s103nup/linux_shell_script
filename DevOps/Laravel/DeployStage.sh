@@ -48,7 +48,7 @@ checkoutRemoteSpecificPrefixBranch $releaseBranchPrefix
 
 if [ "$useComposer" = true ]; then
     # Install composer dependency that skips installing packages listed in require-dev
-    installDependencyNoDev
+    installComposerDependencyNoDev
 fi
 
 # Update Laravel config cache
@@ -56,7 +56,7 @@ updateConfigCache
 
 if [ "$useNpm" = true ]; then
     # Install npm dependency
-    installDependency
+    installNpmDependency
 
     # Compiler front-end scripts
     compilerProd
