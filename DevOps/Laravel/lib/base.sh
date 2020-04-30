@@ -1,18 +1,16 @@
 #!/bin/bash
 
-# Configuration
-COLOR_REST='\e[0m'
-COLOR_GREEN='\e[0;32m'
-COLOR_RED='\e[0;31m'
+# Environment configuration
+source "./env/base.sh"
 
 # Functions
 echoErrorAndExit () {
-    echo -e "Error: $COLOR_RED$1$COLOR_REST"
+    echo -e "Error: $(getColorRed)$1$(getColorReset)"
     exit 1
 }
 
 echoInfo () {
-    echo -e "Info: $COLOR_GREEN$1$COLOR_REST"
+    echo -e "Info: $(getColorGreen)$1$(getColorReset)"
 }
 
 isFailed () {

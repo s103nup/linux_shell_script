@@ -1,31 +1,46 @@
 #!/bin/sh
-#
+
+# Environment configuration
+source "./env/nginx.sh"
+
 # Functions
 
-createSiteRoot () {
+createNginxSiteRoot () {
     local siteRoot=$1
-    local siteRoot=$1
-    local siteRoot=$1
-    echoInfo "Create site root directory $siteRoot"
+
+    echoInfo "Create Nginx site root $siteRoot"
     makeDirs $siteRoot
-    changeOwnerAndGroupRecursive $nginxUser $nginxUser $siteRoot
+    changeOwnerAndGroupRecursive $(getNginxDefaultUser) $(getNginxDefaultUser) $siteRoot
 }
 
-createLaravelProject () {
-    destination=$1
-    version=$2
-    packageName="laravel/laravel"
+initNginxSiteConfig () {
+    local cofigPath=$1
+    local domain=$2
 
-    # Set version
-    defaultVersion="6.*"
-    if [ -z $version ]; then
-        version=$defaultVersion
-    fi
+    echoInfo "Initialize Nginx site config $cofigPath"
 
-    echoInfo "Create project on $destination using Laravel $version"
-
-    createComposerProject $packageName $version $destination
+    copy $(getNginxDefaultConfigPath) $cofigPath
+    replaceInFile $(getNginxDefaultDomain) $domain $cofigPath
 }
-# 
-# Create site root
-echoInfo "Create site root directory $siteRoot"
+
+initNginxSiteSslCrt () {
+    local siteCrtPath=$1
+
+    echoInfo "Initialize Nginx site SSL crt $siteCrtPath"
+    copy $(getNginxDefaultSslCrtPath) $siteCrtPath
+}
+
+initNginxSiteSslKey () {
+    local siteKeyPath=$1
+
+    echoInfo "Initialize Nginx site SSL Key $siteKeyPath"
+    copy $(getNginxDefaultSslKeyPath) $siteKeyPath
+}
+
+createNginxSiteLogRoot () {
+    local siteLogRoot=$1
+
+    echoInfo "Create Nginx site log root $siteLogRoot"
+    makeDirs $siteLogRoot
+    changeOwnerAndGroupRecursive $(getNginxDefaultUser) $(getNginxDefaultUser) $siteLogRoot
+}
