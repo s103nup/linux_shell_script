@@ -1,10 +1,10 @@
 #!/bin/bash
-source "./lib/Base.sh"
-source "./lib/Composer.sh"
-source "./lib/Git.sh"
-source "./lib/Laravel.sh"
+source "./lib/base.sh"
+source "./lib/composer.sh"
+source "./lib/git.sh"
+source "./lib/laravel.sh"
 
-source "./lib/Project.sh"
+source "./lib/project.sh"
 
 read -p "Please input the git repository name of project: " repoName
 read -p "Please input project root parent: " projectRootParent
