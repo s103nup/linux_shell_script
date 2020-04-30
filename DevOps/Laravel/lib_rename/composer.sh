@@ -13,9 +13,9 @@ installComposerDependency () {
 
 
 createComposerProject () {
-    packageName=$1
-    packageVersion=$2
-    destination=$3
+    local packageName=$1
+    local packageVersion=$2
+    local destination=$3
     
     composer create-project --prefer-dist $packageName $destination "$packageVersion"
     isFailed

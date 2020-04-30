@@ -17,10 +17,10 @@ echoInfo () {
 
 isFailed () {
     # Execution result
-    result=$?
+    local result=$?
 
     # Set error message
-    defaultMsg="Failed!"
+    local defaultMsg="Failed!"
     if [ $# -gt 0 ]; then
         defaultMsg=$1
     fi
@@ -32,29 +32,29 @@ isFailed () {
 }
 
 switchDir () {
-    destination=$1
+    local destination=$1
 
     cd $siteRoot
     isFailed
 }
 
 move () {
-    source=$1
-    destination=$2
+    local source=$1
+    local destination=$2
 
     mv $1 $2
     isFailed
 }
 
 removeDirs () {
-    dirs=$@
+    local dirs=$@
 
     rm -rf $dirs
     isFailed
 }
 
 makeDirs () {
-    dirs=$@
+    local dirs=$@
 
     mkdir -p $dirs
     isFailed
@@ -67,26 +67,35 @@ makeDirs () {
 # }
 
 replaceInFile () {
-    search=$1
-    replace=$2
-    destination=$3
+    local search=$1
+    local replace=$2
+    local destination=$3
 
     sed -i "s/$search/$replace/g" $destination
     isFailed
 }
 
 changePermissionRecursive () {
-    permission=$1
-    target=$2
+    local permission=$1
+    local target=$2
 
     chmod -R $permission $target
     isFailed
 }
 
 copy () {
-    source=$1
-    target=$2
+    local source=$1
+    local target=$2
     
     cp $source $target
+    isFailed
+}
+
+changeOwnerAndGroupRecursive () {
+    local owner=$1
+    local group=$2
+    local target=$3
+
+    chown -R $owner:$group $target
     isFailed
 }
