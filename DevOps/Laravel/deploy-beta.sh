@@ -4,11 +4,11 @@
 #   1. Make sure ".git" directory exist in backup directory
 #   2. Set git repository url to local path, Ex: file:///var/devops/source.git/
 
-source "./lib/Base.sh"
-source "./lib/Git.sh"
-source "./lib/Composer.sh"
-source "./lib/Npm.sh"
-source "./lib/Laravel.sh"
+source "./lib/base.sh"
+source "./lib/git.sh"
+source "./lib/composer.sh"
+source "./lib/npm.sh"
+source "./lib/laravel.sh"
 
 # Basic configuration
 siteName="<site name>"

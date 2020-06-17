@@ -5,12 +5,12 @@
 # Clone from repository
 
 createLaravelProject () {
-    destination=$1
-    version=$2
-    packageName="laravel/laravel"
+    local destination=$1
+    local version=$2
+    local packageName="laravel/laravel"
 
     # Set version
-    defaultVersion="6.*"
+    local defaultVersion="6.*"
     if [ -z $version ]; then
         version=$defaultVersion
     fi
@@ -21,9 +21,9 @@ createLaravelProject () {
 }
 
 addGitToLaravelProject () {
-    repoName=$1
-    projectRoot=$2
-    tempDir="./temp"
+    local repoName=$1
+    local projectRoot=$2
+    local tempDir="./temp"
 
     echoInfo "Add Git to Laravel project $projectRoot"
 
@@ -32,9 +32,9 @@ addGitToLaravelProject () {
 }
 
 migrateGitRepository () {
-    tempDir=$1
-    destination="$2/"
-    dotGitDir="$tempDir/.git"
+    local tempDir=$1
+    local destination="$2/"
+    local dotGitDir="$tempDir/.git"
 
     echoInfo "Migrate $dotGitDir to $destination"
 
@@ -43,9 +43,9 @@ migrateGitRepository () {
 }
 
 initLaravelProjectOnWindows () {
-    projectRoot=$1
-    domain=$2
-    sourceRoot="./source"
+    local projectRoot=$1
+    local domain=$2
+    local sourceRoot="./source"
 
     echoInfo "Initialize Laravel project"
 
@@ -55,11 +55,11 @@ initLaravelProjectOnWindows () {
 }
 
 updateLaravelAppUrl () {
-    projectRoot=$1
-    domain=$2
-    search="http:\/\/localhost"
-    replace="https:\/\/$domain"
-    envPath="$projectRoot/.env"
+    local projectRoot=$1
+    local domain=$2
+    local search="http:\/\/localhost"
+    local replace="https:\/\/$domain"
+    local envPath="$projectRoot/.env"
 
     echoInfo "Update APP_URL to $domain"
 
@@ -67,9 +67,9 @@ updateLaravelAppUrl () {
 }
 
 migrateReadme () {
-    sourceRoot=$1
-    projectRoot=$2
-    readmePath="$1/git/README.md"
+    local sourceRoot=$1
+    local projectRoot=$2
+    local readmePath="$1/git/README.md"
 
     echoInfo "Migrate $readmePath to $projectRoot"
 
@@ -77,23 +77,23 @@ migrateReadme () {
 }
 
 makeLaravelCustomizeDirs () {
-    projectRoot=$1
+    local projectRoot=$1
     echoInfo "Make Laravel customize directories"
 
     # app
-    laravelRoot="$projectRoot/app"
-    modelDir="$laravelRoot/Models"
-    repositoryDir="$laravelRoot/Repositories"
-    serviceDir="$laravelRoot/Services"
+    local laravelRoot="$projectRoot/app"
+    local modelDir="$laravelRoot/Models"
+    local repositoryDir="$laravelRoot/Repositories"
+    local serviceDir="$laravelRoot/Services"
 
     # script
-    scriptRoot="$projectRoot/scripts"
-    devopsScriptRoot="$scriptRoot/devops"
-    betaDeployScriptDir="$devopsScriptRoot/beta"
-    stageDeployScriptDir="$devopsScriptRoot/stage"
-    prodDeployScriptDir="$devopsScriptRoot/prod"
+    local scriptRoot="$projectRoot/scripts"
+    local devopsScriptRoot="$scriptRoot/devops"
+    local betaDeployScriptDir="$devopsScriptRoot/beta"
+    local stageDeployScriptDir="$devopsScriptRoot/stage"
+    local prodDeployScriptDir="$devopsScriptRoot/prod"
 
-    customizeDirs=($modelDir $repositoryDir $serviceDir $betaDeployScriptDir $stageDeployScriptDir $prodDeployScriptDir)
+    local customizeDirs=($modelDir $repositoryDir $serviceDir $betaDeployScriptDir $stageDeployScriptDir $prodDeployScriptDir)
 
     for dir in "${customizeDirs[@]}"
     do
@@ -103,9 +103,10 @@ makeLaravelCustomizeDirs () {
 }
 
 changeLaravelStoragePermission () {
-    permission="777"
-    projectRoot=$1
-    storageDir="$projectRoot/storage"
+    local permission="777"
+    local projectRoot=$1
+    local storageDir="$projectRoot/storage"
+    
     echoInfo "Change Laravel storage directory permission to $permission"
     changePermissionRecursive $permission $storageDir
 }

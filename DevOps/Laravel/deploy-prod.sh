@@ -4,20 +4,19 @@
 #   1. Make sure ".git" directory exist in backup directory
 #   2. Set git repository url to local path, Ex: file:///var/devops/source.git/
 
-source "./lib/Base.sh"
-source "./lib/Git.sh"
-source "./lib/Composer.sh"
-source "./lib/Npm.sh"
-source "./lib/Laravel.sh"
-
+source "./lib/base.sh"
+source "./lib/git.sh"
+source "./lib/composer.sh"
+source "./lib/npm.sh"
+source "./lib/laravel.sh"
 
 # Basic configuration
 siteName="<site name>"
 siteRoot="/var/www/$siteName"
-tempBranch="master"
-releaseBranchPrefix="release"
+tempBranch="develop"
+masterBranch="master"
 backupRoot="/home/<user>/devops/$siteName/backup"
-removeDirs="<remove directories>"
+removeDirs="<remove direcoties>"
 
 # Advance configuration
 useComposer=false
@@ -37,14 +36,14 @@ cleanCurrentBranch
 # Checkout temparory branch
 checkoutBranch $tempBranch
 
-# Delete local release branches
-deleteSpecificPrefixBranchs $releaseBranchPrefix
+# Delete local master branches
+deleteBranch $masterBranch
 
 # Update local git
 updateLocalGit
 
-# Checkout release branch
-checkoutRemoteSpecificPrefixBranch $releaseBranchPrefix
+# Checkout remote master branch
+checkoutRemoteSpecificBranch $masterBranch
 
 if [ "$useComposer" = true ]; then
     # Install composer dependency that skips installing packages listed in require-dev
