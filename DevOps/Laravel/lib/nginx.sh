@@ -38,7 +38,7 @@ initNginxSiteSslKey () {
 }
 
 createNginxSiteLogRoot () {
-    local siteLogRoot=$1
+    local $siteLogRoot=$1
 
     echoInfo "Create Nginx site log root $siteLogRoot"
     makeDirs $siteLogRoot

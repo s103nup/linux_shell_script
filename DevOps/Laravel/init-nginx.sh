@@ -5,7 +5,6 @@ source "./lib/nginx.sh"
 
 # Basic configuration
 read -p "Please input domain: " domain
-siteRoot="$(getNginxRoot)/$domain"
 siteNginxCfgPath="$(getNginxConfigRoot)/$domain.conf"
 siteCrtPath="$(getNginxSslRoot)/certs/$domain.crt"
 siteKeyPath="$(getNginxSslRoot)/private/$domain.key"
