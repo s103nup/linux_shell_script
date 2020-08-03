@@ -44,3 +44,8 @@ createNginxSiteLogRoot () {
     makeDirs $siteLogRoot
     changeOwnerAndGroupRecursive $(getNginxDefaultUser) $(getNginxDefaultUser) $siteLogRoot
 }
+
+restartNginxService () {
+    echoInfo "Restart Nginx service"
+    restartService 'nginx'
+}

@@ -97,3 +97,10 @@ changeOwnerAndGroupRecursive () {
     chown -R $owner:$group $target
     isFailed
 }
+
+restartService () {
+    local service=$1
+
+    systemctl restart $service
+    isFailed
+}

@@ -5,10 +5,12 @@ source "./lib/nginx.sh"
 
 # Basic configuration
 read -p "Please input domain: " domain
+siteRoot="$(getNginxRoot)/$domain/public"
 siteNginxCfgPath="$(getNginxConfigRoot)/$domain.conf"
-siteCrtPath="$(getNginxSslRoot)/certs/$domain.crt"
-siteKeyPath="$(getNginxSslRoot)/private/$domain.key"
 siteNginxLogRoot="$(getNginxLogRoot)/$domain"
+
+# Init configuration
+initCertificate=false
 
 # Create site root
 createNginxSiteRoot $siteRoot
@@ -16,9 +18,15 @@ createNginxSiteRoot $siteRoot
 # Init site configuration
 initNginxSiteConfig $siteNginxCfgPath $domain
 
-# Init site SSL crt and key
-initNginxSiteSslCrt $siteCrtPath
-initNginxSiteSslKey $siteKeyPath
+if [ "$initCertificate" = true ]; then
+    # Init site SSL crt and key
+	siteCrtPath="$(getNginxSslRoot)/certs/$domain.crt"
+	siteKeyPath="$(getNginxSslRoot)/private/$domain.key"
+	initNginxSiteSslCrt $siteCrtPath
+	initNginxSiteSslKey $siteKeyPath
+fi
 
 # Create site log directory
 createNginxSiteLogRoot $siteNginxLogRoot
+
+# Restart Nginx service
