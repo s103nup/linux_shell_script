@@ -17,7 +17,7 @@ cleanCurrentBranch () {
     local currentBranch=$(git rev-parse --abbrev-ref HEAD)
 
     git reset --hard \
-        && git clean -d -f
+        && git clean -f
     isFailed
 }
 

@@ -11,7 +11,6 @@ installComposerDependency () {
     isFailed
 }
 
-
 createComposerProject () {
     local packageName=$1
     local packageVersion=$2
@@ -19,4 +18,9 @@ createComposerProject () {
     
     composer create-project --prefer-dist $packageName $destination "$packageVersion"
     isFailed
+}
+
+updateComposerAutoload () {
+	composer dump
+	isFailed
 }

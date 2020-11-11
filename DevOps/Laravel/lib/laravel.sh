@@ -19,6 +19,12 @@ updateMigration () {
     isFailed
 }
 
+updateSeeder () {
+    echoInfo "Update Laravel seeder"
+    php artisan db:seed
+    isFailed
+}
+
 runPhpunit () {
     echoInfo "Run the Phpunit tests"
     ./vendor/bin/phpunit --testdox

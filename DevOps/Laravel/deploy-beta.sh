@@ -11,21 +11,11 @@ source "./lib/npm.sh"
 source "./lib/laravel.sh"
 
 # Basic configuration
-siteName="<site name>"
-siteRoot="/var/www/$siteName"
+siteName="$(getSiteName)"
+siteRoot="$(getWebServerRoot)/$siteName"
 tempBranch="master"
 featureBranchPrefix="feature"
-backupRoot="/home/<user>/devops/$siteName/backup"
-removeDirs="<remove direcoties>"
-
-# Advance configuration
-useComposer=false
-useMigration=false
-useNpm=false
-useSwagger=false
-usePhpunit=false
-useDusk=false
-useClearFiles=false
+removeDirs="$(getRemoveDirs)"
 
 # Switch to site root
 switchDir $siteRoot
@@ -45,38 +35,30 @@ updateLocalGit
 # Checkout feature branch
 checkoutRemoteSpecificPrefixBranch $featureBranchPrefix
 
-if [ "$useComposer" = true ]; then
-    # Install composer dependency
-    installComposerDependency
-fi
+# Update composer autoload
+updateComposerAutoload
 
-# Update Laravel config cache
-updateConfigCache
-
-if [ "$useMigration" = true ]; then
+if [ "$(getUseMigration)" = true ]; then
     # Update Laravel migration
     updateMigration
 fi
 
-if [ "$useNpm" = true ]; then
-    # Install npm dependency
-    installNpmDependency
-
-    # Compiler front-end scripts
-    compilerProd
+if [ "$(getUseSeeder)" = true ]; then
+    # Update Laravel seeder
+    updateSeeder
 fi
 
-if [ "$useSwagger" = true ]; then
+if [ "$(getUseSwagger)" = true ]; then
     # Update Swagger
     updateSwagger
 fi
 
-if [ "$usePhpunit" = true ]; then
+if [ "$(getUsePhpunit)" = true ]; then
     # Feature test
     runPhpunit
 fi
 
-if [ "$useDusk" = true ]; then
+if [ "$(getUseDusk)" = true ]; then
     # E2e test
     runDusk
 fi
@@ -84,7 +66,7 @@ fi
 # Display local branchs
 displayCurrentBranchDetail
 
-if [ "$useClearFiles" = true ]; then
+if [ "$(getClearFiles)" = true ]; then
     # Remove unecessary files
     removeDirs $removeDirs
 fi

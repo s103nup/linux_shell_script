@@ -11,18 +11,12 @@ source "./lib/npm.sh"
 source "./lib/laravel.sh"
 
 # Basic configuration
-siteName="<site name>"
-siteRoot="/var/www/$siteName"
+siteName="$(getSiteName)"
+siteRoot="$(getWebServerRoot)/$siteName"
 tempBranch="develop"
 masterBranch="master"
-backupRoot="/home/<user>/devops/$siteName/backup"
-removeDirs="<remove direcoties>"
-
-# Advance configuration
-useComposer=false
-useNpm=false
-useSwagger=false
-useClearFiles=false
+backupRoot="/home/$(getDeployUser)/devops/$siteName/backup"
+removeDirs="$(getRemoveDirs)"
 
 # Switch to site root
 switchDir $siteRoot
@@ -45,23 +39,23 @@ updateLocalGit
 # Checkout remote master branch
 checkoutRemoteSpecificBranch $masterBranch
 
-if [ "$useComposer" = true ]; then
-    # Install composer dependency that skips installing packages listed in require-dev
-    installComposerDependencyNoDev
-fi
+# Update composer autoload
+updateComposerAutoload
 
 # Update Laravel config cache
 updateConfigCache
 
-if [ "$useNpm" = true ]; then
-    # Install npm dependency
-    installNpmDependency
-
-    # Compiler front-end scripts
-    compilerProd
+if [ "$(getUseMigration)" = true ]; then
+    # Update Laravel migration
+    updateMigration
 fi
 
-if [ "$useSwagger" = true ]; then
+if [ "$(getUseSeeder)" = true ]; then
+    # Update Laravel seeder
+    updateSeeder
+fi
+
+if [ "$(getUseSwagger)" = true ]; then
     # Update Swagger
     updateSwagger
 fi
@@ -72,7 +66,7 @@ displayCurrentBranchDetail
 # Backup ".git" directory
 backupDotGitdir $siteRoot $backupRoot
 
-if [ "$useClearFiles" = true ]; then
+if [ "$(getClearFiles)" = true ]; then
     # Remove unecessary files
     removeDirs $removeDirs
 fi
