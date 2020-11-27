@@ -10,7 +10,7 @@ createLaravelProject () {
     local packageName="laravel/laravel"
 
     # Set version
-    local defaultVersion="6.*"
+    local defaultVersion=$(getLaravelDefaultVersion)
     if [ -z $version ]; then
         version=$defaultVersion
     fi

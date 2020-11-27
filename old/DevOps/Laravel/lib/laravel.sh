@@ -36,3 +36,7 @@ runDusk () {
     php artisan dusk --testdox
     isFailed
 }
+
+getLaravelDefaultVersion () {
+    echo "6.*"
+}

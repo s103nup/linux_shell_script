@@ -9,8 +9,8 @@ source "./lib/project.sh"
 read -p "Please input the git repository name of project: " repoName
 read -p "Please input project root parent: " projectRootParent
 read -p "Please input project domain: " domain
+read -p "Please input Laravel version" version
 
-version="6.*"
 projectRoot="$projectRootParent/$domain"
 
 createLaravelProject $projectRoot $version
