@@ -17,7 +17,7 @@ getColorYellow () {
 	echo '\e[33m'
 }
 
-# Project
+# Project Common
 getLaradockEnv () {
 	echo ".env"
 }
@@ -26,22 +26,31 @@ getLaradockExampleEnv () {
 	echo "env-example"
 }
 
-getLaradockInstallDir () {
-	echo "./laradock-demo"
-}
-
-getLaradockProjectName () {
-	echo "laradock-demo"
-}
-
 getLaradockRepo () {
 	echo "https://github.com/Laradock/laradock.git"
 }
 
-getLaradockComposeProjectNameDirective () {
-	echo "COMPOSE_PROJECT_NAME"
+getLaradockNginxCertDir () {
+	echo "nginx/ssl"
 }
 
-getLaradockDefaultComposeProjectName () {
-	echo "laradock"
+getLaradockNginxSiteConfPath () {
+	echo "nginx/sites/default.conf"
+}
+
+# Project customize
+getLaradockProjectName () {
+	echo "laradock-cf-demo"
+}
+
+getProjectRoot () {
+	echo "~/project/cf-demo"
+}
+
+getScriptSourcePath () {
+	echo "~/script/linux_shell_script/install-laradock/source"
+}
+
+getServerName () {
+	echo "cf-demo.com.tw"
 }

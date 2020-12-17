@@ -4,14 +4,6 @@
 source "./env.sh"
 
 # Functions
-# appendToFile () {
-#     local source=$1
-#     local destination=$2
-
-#     cat $source >> $destination
-#     isFailed
-# }
-
 copyRecursive () {
     local source=$1
     local destination=$2
