@@ -14,8 +14,6 @@ rollbackDotGitDir () {
 }
 
 cleanCurrentBranch () {
-    local currentBranch=$(git rev-parse --abbrev-ref HEAD)
-
     git reset --hard \
         && git clean -f
     isFailed
