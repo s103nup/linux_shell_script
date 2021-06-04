@@ -25,9 +25,10 @@ getSource () {
 }
 
 getIgnoreList () {
-	echo '.git .gitignore tests/ phpunit.xml vendor/ composer.lock'
+	echo '.git .gitignore tests/ phpunit.xml vendor/ composer.lock node_modules'
 }
 
 getTarName () {
-	echo 'gw_sdk_v1.0.2011250.tar.gz'
+	local subVersion="$(date +"%y%m%d")0"
+	echo "gw_sdk_v1.$subVersion.0.tar.gz"
 }
