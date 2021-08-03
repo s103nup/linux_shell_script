@@ -20,15 +20,15 @@ getPublishPath () {
 	echo './publish_gw_sdk'
 }
 
-getSource () {
-	echo '/d/personal/git/GW/SDK/gw_sdk/'
-}
-
 getIgnoreList () {
 	echo '.git .gitignore tests/ phpunit.xml vendor/ composer.lock node_modules'
 }
 
+getSource () {
+	# source path
+	echo '/d/project/'
+}
+
 getTarName () {
-	local subVersion="$(date +"%y%m%d")0"
-	echo "gw_sdk_v1.$subVersion.0.tar.gz"
+	echo 'package_1.1.0.tar.gz'
 }
