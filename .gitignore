@@ -2,3 +2,4 @@ DevOps/Laravel/ssl
 *.DS_Store
 sh.exe.stackdump
 install-laradock/source/
+publish-composer-package/env.sh
