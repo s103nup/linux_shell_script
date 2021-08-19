@@ -11,7 +11,7 @@ getColorReset () {
 
 # Project
 getMaxtime () {
-	echo '5'
+	echo '3'
 }
 
 getReportFile () {
