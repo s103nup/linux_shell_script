@@ -4,12 +4,11 @@
 source "./env.sh"
 
 # Functions
-copyR () {
-    local source=$1
-    local target=$2
+appendTo () {
+    local input=$1
+    local to=$2
 
-    cp -R $source $target
-    isFailed
+    echo "$input" >> "$to"
 }
 
 echoErrorAndExit () {
@@ -37,31 +36,16 @@ isFailed () {
     fi
 }
 
-makeDirs () {
-    local dirs=$@
+outputTo () {
+    local input=$1
+    local to=$2
 
-    mkdir -p $dirs
-    isFailed
-}
-
-removeFiles () {
-    local files=$@
-
-    rm -rf $files
-    isFailed
+    echo "$input" > "$to"
 }
 
 switchDir () {
     local destination=$1
 
     cd $destination
-    isFailed
-}
-
-tarDir () {
-    local name=$1
-    local target=$2
-
-    tar -czf $name $target
     isFailed
 }

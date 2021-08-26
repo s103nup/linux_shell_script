@@ -4,3 +4,4 @@ sh.exe.stackdump
 install-laradock/source/
 publish-composer-package/env.sh
 connection-testing/report/*.txt
+publish-release/commit-files.txt
