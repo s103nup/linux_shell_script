@@ -25,9 +25,9 @@ getRemoteName () {
 }
 # options
 getSource () {
-    echo '/d/personal/git/GW/Service/log-api-dev.ecpay.com.tw/'
+    echo '/d/project/'
 }
 
 getReportFilePath () {
-    echo '/d/personal/git/personal/linux_shell_script/publish-release/commit-files.txt'
+    echo '/d/report/commit-files.txt'
 }
