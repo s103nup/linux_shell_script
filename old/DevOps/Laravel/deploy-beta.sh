@@ -7,7 +7,6 @@
 source "./lib/base.sh"
 source "./lib/git.sh"
 source "./lib/composer.sh"
-source "./lib/npm.sh"
 source "./lib/laravel.sh"
 
 # Basic configuration

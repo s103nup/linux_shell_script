@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # Configuration
-GIT_SSH_REMOTE_URL_PREFIX='<git ssh url>'
 REMOTE_PREFIX='remotes/origin'
 
 
@@ -65,10 +64,12 @@ checkoutRemoteSpecificBranch () {
 }
 
 checkoutRemoteSpecificPrefixBranch () {
-    local prefix="$REMOTE_PREFIX/$1/"
-    local targetBranches=$(git branch -av | grep $prefix | awk -F'  ' '{print $2}' | cut -d ' ' -f1 | cut -d '/' -f3,4 | head -n1)
-
-    checkoutRemoteSpecificBranch $targetBranches
+    local refName="ref/remotes/$REMOTE_PREFIX/$1/"
+    local targetBranch=$(git for-each-ref --sort=-committerdate --count=1 --format='%(refname)' "$refName" | cut -d '/' -f 4,5)
+    
+    # for git 2.x 
+    # local targetBranch=$(git for-each-ref --sort=-committerdate --count=1 --format='%(refname:lstrip=3)' "$refName"
+    checkoutRemoteSpecificBranch $targetBranch
 }
 
 displayCurrentBranchDetail () {
